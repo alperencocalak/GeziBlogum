@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <title>@ViewData["Title"] Alperen's Blog</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center gap-2">
+                <i class="bi bi-airplane-fill"></i> <span>Alperen's Blog</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Menüyü Aç/Kapat">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto">
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a href="/posts/list" class="nav-link">Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/profile/@User.Identity.Name" class="nav-link">@User.Identity.Name</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/users/logout" class="nav-link">Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a href="/users/login" class="nav-link">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/users/register" class="nav-link">Register</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        @if (TempData["Message"] != null)
+        {
+            <div id="alertMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Message"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+    
+<script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.getElementById("alertMessage");
+        if (alertBox) {
+            setTimeout(() => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alertBox);
+                bsAlert.close();
+            }, 3000);
+        }
+    });
+</script>
+</body>
+</html>
+

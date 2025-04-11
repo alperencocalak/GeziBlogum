@@ -1,0 +1,56 @@
+@model PostUpdateViewModel
+@using System.Security.Claims
+
+<div class="container my-4">
+	<div class="row justify-content-center">
+		<div class="col-12 col-md-10 col-lg-8">
+			<div class="bg-white p-4 rounded shadow-sm">
+				<h1 class="h4 mb-4">Post Edit</h1>
+
+				<form asp-action="Edit" method="post">
+					<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+					<input type="hidden" asp-for="PostId" />
+
+					<div class="mb-3">
+						<label asp-for="Title" class="form-label"></label>
+						<input asp-for="Title" class="form-control" />
+						<span asp-validation-for="Title" class="text-danger"></span>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="Description" class="form-label"></label>
+						<input asp-for="Description" class="form-control" />
+						<span asp-validation-for="Description" class="text-danger"></span>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="Url" class="form-label"></label>
+						<input asp-for="Url" class="form-control" />
+						<span asp-validation-for="Url" class="text-danger"></span>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="Content" class="form-label"></label>
+						<input asp-for="Content" class="form-control" />
+						<span asp-validation-for="Content" class="text-danger"></span>
+					</div>
+
+					@if (User.FindFirstValue(ClaimTypes.Role) == "admin")
+					{
+						<div class="form-check mb-3">
+
+							@* <input name="IsActive" id="IsActive" type="checkbox" class="form-check-input" /> *@
+							@Html.CheckBoxFor(m => m.IsActive, Model.IsActive)
+							@* <input asp-for="IsActive" class="form-check-input" value="true" /> *@
+							<label asp-for="IsActive" class="form-check-label">Yayınla</label>
+						</div>
+					}
+					<div class="d-grid">
+						<button type="submit" class="btn btn-primary">Update</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

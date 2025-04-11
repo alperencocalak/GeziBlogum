@@ -1,0 +1,62 @@
+@model PostViewModel
+
+@{
+
+    if (User.FindFirstValue(ClaimTypes.Role) != "admin")
+    {
+
+        Model.Posts = Model.Posts.Where(x => x.IsActive).ToList();
+    }
+}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="bg-white p-4 rounded shadow-sm">
+                <h1 class="h4 mb-4">Popular Blogs</h1>
+
+                @foreach (var post in Model.Posts)
+                {
+                    <div class="card bg-transparent border-0 mb-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-12 col-sm-4">
+                                <img src="@post.Image" class="img-fluid rounded w-100" alt="Post Görseli" />
+                            </div>
+                            <div class="col-12 col-sm-8">
+                                <h5>
+                                    <a href="/blogs/@post.Url" class="btn-link fw-bold text-decoration-none">@post.Title</a>
+                                </h5>
+                                <p class="mb-2">@post.Description</p>
+
+                                <div class="tags">
+                                    @foreach (var tag in post.Tags)
+                                    {
+                                        <a href="/posts/tag/@tag.Url"
+                                           class="badge bg-@tag.Color bg-opacity-10 text-@tag.Color fw-bold me-1">
+                                            @tag.Text
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4" />
+                }
+
+        
+                <nav aria-label="Sayfalama" class="d-flex justify-content-center mt-4">
+                    <ul class="pagination">
+                        <li class="page-item"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+            <vc:tags-menu></vc:tags-menu>
+            <vc:new-posts></vc:new-posts>
+        </div>
+    </div>
+</div>
