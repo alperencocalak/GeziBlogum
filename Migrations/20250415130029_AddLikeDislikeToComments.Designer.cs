@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeziBlogum.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20250410145513_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250415130029_AddLikeDislikeToComments")]
+    partial class AddLikeDislikeToComments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,12 @@ namespace GeziBlogum.Migrations
                 {
                     b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LikeCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("PostId")
@@ -75,6 +81,9 @@ namespace GeziBlogum.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ViewCount")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("PostId");

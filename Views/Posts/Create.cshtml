@@ -3,53 +3,56 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-8">
-            <div class="bg-white p-4 rounded shadow-sm">
-                <h1 class="h4 mb-4 text-center">Yeni Post Oluştur</h1>
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h1 class="h4 mb-4 text-center">📝 Yeni Post Oluştur</h1>
 
-                <form asp-action="Create" method="post" enctype="multipart/form-data" novalidate>
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    <div class="mb-3">
-                        <label asp-for="Title" class="form-label"></label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-semibold">Başlık</label>
+                            <input asp-for="Title" class="form-control form-control-lg" placeholder="Başlık Girin..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Description" class="form-label"></label>
-                        <input asp-for="Description" class="form-control" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold">Açıklama</label>
+                            <input asp-for="Description" class="form-control form-control-lg" placeholder="Kısa Açıklama..." />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Url" class="form-label"></label>
-                        <input asp-for="Url" class="form-control" />
-                        <span asp-validation-for="Url" class="text-danger"></span>
-                    </div>
+                        <div class="mb-3">
+                            <label asp-for="Url" class="form-label fw-semibold">URL</label>
+                            <input asp-for="Url" class="form-control form-control-lg" placeholder="Url Girin..." />
+                            <span asp-validation-for="Url" class="text-danger"></span>
+                        </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Content" class="form-label"></label>
-                        <textarea asp-for="Content" class="form-control" rows="5"></textarea>
-                        <span asp-validation-for="Content" class="text-danger"></span>
-                    </div>
+                        <div class="mb-3">
+                            <label asp-for="Content" class="form-label fw-semibold">İçerik</label>
+                            <textarea asp-for="Content" class="form-control" rows="6" placeholder="Post İçeriğini Girin..."></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
 
-                    <div class="mb-3">
-                        <label asp-for="ImageFile" class="form-label"></label>
-                        <input asp-for="ImageFile" type="file" class="form-control" />
-                        <span asp-validation-for="ImageFile" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="SelectedTagId" class="form-label">Etiket Seç</label>
-                        <select asp-for="SelectedTagId" class="form-select" asp-items="@(new SelectList(Model.Tags, "TagId", "Text"))">
-                        <option value="">-- Etiket seçiniz --</option>
-                        </select>
-                    <span asp-validation-for="SelectedTagId" class="text-danger"></span>
-                    </div>
+                        <div class="mb-3">
+                            <label asp-for="ImageFile" class="form-label fw-semibold">Görsel</label>
+                            <input asp-for="ImageFile" type="file" class="form-control form-control-lg" />
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Oluştur</button>
-                    </div>
-                </form>
+                        <div class="mb-4">
+                            <label asp-for="SelectedTagId" class="form-label fw-semibold">Etiket Seç</label>
+                            <select asp-for="SelectedTagId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Tags, "TagId", "Text"))">
+                                <option value="">-- Etiket seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="SelectedTagId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">📤 Oluştur</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

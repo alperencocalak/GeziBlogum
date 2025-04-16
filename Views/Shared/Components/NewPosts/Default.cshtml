@@ -1,18 +1,40 @@
 @model List<Post>
-<div class="card mt-3">
-    <div class="card-header">
-        <h5 class="card-title">New Posts</h5>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-white border-bottom">
+        <h5 class="card-title mb-0">📝 Yeni Gönderiler</h5>
     </div>
     <div class="card-body">
-        @foreach(var post in Model){
+        @if (Model.Any())
+        {
+            <ul class="list-unstyled mb-0">
+                @foreach (var post in Model)
+                {
+                    <li class="mb-3">
+                        <div class="d-flex flex-column flex-sm-row align-items-start gap-2">
+                            @if (!string.IsNullOrEmpty(post.Image))
+                            {
+                                <img src="@post.Image"
+                                     alt="@post.Title"
+                                     class="rounded"
+                                     style="width: 60px; height: 60px; object-fit: cover;" />
+                            }
 
-        <div class="mb-3">
-            <h6 class="mb-0">
-                <a href="/blogs/@post.Url">
-                @post.Title
-                </a>
-            </h6>
-        </div>
+                            <div class="flex-grow-1">
+                                <a href="/blogs/@post.Url"
+                                   class="text-decoration-none fw-semibold text-dark d-block">
+                                    @post.Title
+                                </a>
+                                <small class="text-muted">@post.PublishedOn.ToString("dd MMM yyyy")</small>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted small mb-0">Gösterilecek yeni gönderi yok.</p>
         }
     </div>
 </div>

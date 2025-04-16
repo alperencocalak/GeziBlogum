@@ -2,57 +2,59 @@
 
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
-            <div class="bg-white p-4 rounded shadow-sm">
-                <h1 class="h4 mb-4 text-center">Kayıt Ol</h1>
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h1 class="h4 mb-4 text-center">📝 Kayıt Ol</h1>
 
-                <form asp-action="Register" method="post" novalidate>
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <form asp-action="Register" method="post" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    <div class="mb-3">
-                        <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Username" class="form-label"></label>
-                        <input asp-for="Username" class="form-control" />
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" type="password" class="form-control" id="Password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-
-                        <div class="form-text mt-2">
-                            Şifre en az 6 karakter, 1 büyük harf, 1 sayı ve 1 özel karakter içermelidir.
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control form-control-lg" placeholder="Ad Soyad" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
-                        <ul id="passwordRules" class="list-unstyled small mb-0">
-                            <li id="rule-length" class="text-danger">• En az 6 karakter</li>
-                            <li id="rule-uppercase" class="text-danger">• En az 1 büyük harf</li>
-                            <li id="rule-number" class="text-danger">• En az 1 rakam</li>
-                            <li id="rule-special" class="text-danger">• En az 1 özel karakter</li>
-                        </ul>
-                    </div>
 
-                    <div class="mb-3">
-                        <label asp-for="ConfirmPassword" class="form-label"></label>
-                        <input asp-for="ConfirmPassword" type="password" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label"></label>
+                            <input asp-for="Username" class="form-control form-control-lg" placeholder="Kullanıcı Adı" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
 
-                    <div class="d-grid">
-                        <button class="btn btn-primary" type="submit">Kayıt Ol</button>
-                    </div>
-                </form>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control form-control-lg" placeholder="E-mail adresiniz" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" type="password" class="form-control form-control-lg" id="Password" placeholder="Şifreniz" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+
+                            <div class="form-text mt-2">
+                                Şifre en az 6 karakter, 1 büyük harf, 1 sayı ve 1 özel karakter içermelidir.
+                            </div>
+                            <ul id="passwordRules" class="list-unstyled small mb-0">
+                                <li id="rule-length" class="text-danger">• En az 6 karakter</li>
+                                <li id="rule-uppercase" class="text-danger">• En az 1 büyük harf</li>
+                                <li id="rule-number" class="text-danger">• En az 1 rakam</li>
+                                <li id="rule-special" class="text-danger">• En az 1 özel karakter</li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control form-control-lg" placeholder="Şifre Tekrar" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg" type="submit">Kayıt Ol</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

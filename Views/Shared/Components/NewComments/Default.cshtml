@@ -1,0 +1,39 @@
+@model List<Comment>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-white border-bottom">
+        <h5 class="card-title mb-0">🗨️ Yeni Yorumlar</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-unstyled mb-0">
+            @foreach (var comment in Model)
+            {
+                if (comment.Post != null)
+                {
+                    <li class="mb-4 pb-3 border-bottom">
+                        <div class="d-flex align-items-start gap-2 mb-2 flex-wrap">
+                            <img src="@comment.User.Image"
+                                 alt="@comment.User.UserName"
+                                 class="rounded-circle"
+                                 style="width: 40px; height: 40px; object-fit: cover;" />
+
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-semibold">@comment.User.UserName</span>
+                                    <small class="text-muted">@comment.PublishedOn.ToString("g")</small>
+                                </div>
+
+                                <div class="text-secondary small mt-1">@comment.Text</div>
+
+                                <a href="/blogs/@comment.Post.Url"
+                                   class="btn btn-sm btn-outline-primary mt-2">
+                                    → Gönderiye Git
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>

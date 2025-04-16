@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GeziBlogum.Data.Abstract;
@@ -15,12 +16,14 @@ namespace GeziBlogum.Controllers
         private IPostRepository _postRepository;
         private ICommentRepository _commentRepository;
         private ITagRepository _tagRepository;
+        private ICommentVoteRepository _commentVoteRepository;
 
-        public PostsController(IPostRepository postRepository, ICommentRepository commentRepository, ITagRepository tagRepository)
+        public PostsController(IPostRepository postRepository, ICommentRepository commentRepository, ITagRepository tagRepository, ICommentVoteRepository commentVoteRepository)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _tagRepository = tagRepository;
+            _commentVoteRepository = commentVoteRepository;
         }
 
         public async Task<IActionResult> Index(string tag)
@@ -32,7 +35,7 @@ namespace GeziBlogum.Controllers
                 posts = posts.Where(x => x.Tags.Any(t => t.Url == tag));
             }
 
-            return View(new PostViewModel { Posts = await posts.ToListAsync()});
+            return View(new PostViewModel { Posts = await posts.ToListAsync() });
         }
 
         public async Task<IActionResult> Details(string url)
@@ -43,21 +46,32 @@ namespace GeziBlogum.Controllers
                 .ThenInclude(x => x.User)
                 .FirstOrDefaultAsync(p => p.Url == url);
 
+            if (result != null)
+            {
+                result.ViewCount++;
+                _postRepository.EditPost(result);
+            }
+
             return View(result);
         }
 
-        public async Task<IActionResult> Tag(string url)
+        public async Task<IActionResult> Tag(int id)
         {
-            var posts = await _postRepository.Posts.Where(p => p.Url == url).ToListAsync();
+            var posts = _postRepository.Posts
+                .Include(p => p.Tags)
+                .Include(p => p.User)
+                .Where(p => p.Tags.Any(t => t.TagId == id) && p.IsActive);
+
+            ViewBag.SelectedTagId = id;
 
             return View("Index", new PostViewModel
             {
-                Posts = posts
+                Posts = await posts.ToListAsync()
             });
         }
 
         [HttpPost]
-        public JsonResult AddComment(int PostId, string Text)
+        public JsonResult AddComment([FromBody] CommentInputModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var username = User.FindFirstValue(ClaimTypes.Name);
@@ -65,29 +79,95 @@ namespace GeziBlogum.Controllers
 
             var entity = new Comment
             {
-                Text = Text,
+                Text = model.Text,
                 PublishedOn = DateTime.Now,
-                PostId = PostId,
-                UserId = int.Parse(userId ?? "")
+                PostId = model.PostId,
+                UserId = int.Parse(userId ?? "0")
             };
 
             _commentRepository.CreateComment(entity);
 
             return Json(new
             {
+                commentId = entity.CommentId,
                 username,
-                Text,
+                model.Text,
                 entity.PublishedOn,
                 avatar
             });
         }
+
+        [HttpPost]
+        public IActionResult LikeComment([FromBody] int commentId)
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) return Json(new { success = false, message = "Kullanıcı doğrulanamadı." });
+
+            int userId = int.Parse(userIdStr);
+
+            if (_commentVoteRepository.HasUserVoted(commentId, userId))
+            {
+                return Json(new { success = false, message = "Bu yoruma daha önce oy verdiniz." });
+            }
+
+            var comment = _commentRepository.Comments.FirstOrDefault(c => c.CommentId == commentId);
+            if (comment == null)
+            {
+                return Json(new { success = false, message = "Yorum bulunamadı." });
+            }
+
+            comment.LikeCount++;
+            _commentRepository.UpdateComment(comment);
+
+            _commentVoteRepository.AddVote(new CommentVote
+            {
+                CommentId = commentId,
+                UserId = userId,
+                IsLike = true
+            });
+
+            return Json(new { success = true, likeCount = comment.LikeCount });
+        }
+
+        [HttpPost]
+        public IActionResult DislikeComment([FromBody] int commentId)
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) return Json(new { success = false, message = "Kullanıcı doğrulanamadı." });
+
+            int userId = int.Parse(userIdStr);
+
+            if (_commentVoteRepository.HasUserVoted(commentId, userId))
+            {
+                return Json(new { success = false, message = "Bu yoruma daha önce oy verdiniz." });
+            }
+
+            var comment = _commentRepository.Comments.FirstOrDefault(c => c.CommentId == commentId);
+            if (comment == null)
+            {
+                return Json(new { success = false, message = "Yorum bulunamadı." });
+            }
+
+            comment.DislikeCount++;
+            _commentRepository.UpdateComment(comment);
+
+            _commentVoteRepository.AddVote(new CommentVote
+            {
+                CommentId = commentId,
+                UserId = userId,
+                IsLike = false
+            });
+
+            return Json(new { success = true, dislikeCount = comment.DislikeCount });
+        }
+
 
         [Authorize]
         public IActionResult Create()
         {
             var model = new PostCreateViewModel
             {
-               Tags = _tagRepository.Tags.ToList()
+                Tags = _tagRepository.Tags.ToList()
             };
             return View(model);
         }

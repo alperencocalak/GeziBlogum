@@ -17,5 +17,11 @@ namespace GeziBlogum.Data.Concrete{
             _context.Users.Add(User);
             _context.SaveChanges();
         }
+        public void UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+         }
+
     }
 }

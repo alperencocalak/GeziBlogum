@@ -1,20 +1,20 @@
 @model List<Tag>
 
-<div class="card mb-3">
-    <div class="card-header">
-        <h5 class="card-title">Etiketler</h5>
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-white border-bottom">
+        <h5 class="card-title mb-0">🏷️ Etiketler</h5>
     </div>
     <div class="card-body">
-        <ul class="list-inline d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2">
             @foreach (var tag in Model)
             {
-                <li class="list-inline-item">
-                    <a href="/posts/tag/@tag.Url"
-                       class="btn btn-outline-@tag.Color btn-sm">
-                       @tag.Text
-                    </a>
-                </li>
+                <a asp-controller="Posts"
+                   asp-action="Tag"
+                   asp-route-id="@tag.TagId"
+                   class="btn btn-outline-@tag.Color btn-sm rounded-pill px-3">
+                    @tag.Text
+                </a>
             }
-        </ul>
+        </div>
     </div>
 </div>

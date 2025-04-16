@@ -4,36 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link rel="icon" type="image/png" href="/img/favicon.png" />
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="/css/style.css" />
 
-    <title>@ViewData["Title"] Alperen's Blog</title>
+    <title>@ViewData["Title"] - Alperen's Blog</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
         <div class="container">
-            <a href="/" class="navbar-brand d-flex align-items-center gap-2">
-                <i class="bi bi-airplane-fill"></i> <span>Alperen's Blog</span>
+            <a href="/" class="navbar-brand d-flex align-items-center gap-2 fw-bold">
+                <i class="bi bi-airplane-fill text-primary"></i> <span>Alperen's Blog</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar" aria-expanded="false" aria-label="Menüyü Aç/Kapat">
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Menüyü Aç/Kapat">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="mainNavbar">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto gap-lg-2">
                     @if (User.Identity!.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a href="/posts/list" class="nav-link">Posts</a>
+                            <a href="/posts/list" class="nav-link">📝 Posts</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/profile/@User.Identity.Name" class="nav-link">@User.Identity.Name</a>
+                            <a href="/profile/@User.Identity.Name" class="nav-link">
+                                👤 @User.Identity.Name
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/users/logout" class="nav-link">Logout</a>
+                            <a href="/users/logout" class="nav-link text-danger">Logout</a>
                         </li>
                     }
                     else
@@ -63,20 +66,19 @@
     </main>
 
     @RenderSection("Scripts", required: false)
-    
-<script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    window.addEventListener("DOMContentLoaded", () => {
-        const alertBox = document.getElementById("alertMessage");
-        if (alertBox) {
-            setTimeout(() => {
-                const bsAlert = bootstrap.Alert.getOrCreateInstance(alertBox);
-                bsAlert.close();
-            }, 3000);
-        }
-    });
-</script>
+    <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const alertBox = document.getElementById("alertMessage");
+            if (alertBox) {
+                setTimeout(() => {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alertBox);
+                    bsAlert.close();
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>
-
